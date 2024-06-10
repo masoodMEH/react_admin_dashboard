@@ -1,7 +1,16 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import {
+    Link,
+    useActionData,
+    useNavigate,
+    useNavigation,
+    useRouteError,
+    useSubmit,
+} from 'react-router-dom';
 
 import logo from '@/assets/images/logo.svg';
+import { httpService } from '@/core/http-service';
+import { useEffect } from 'react';
 
 const Register = () => {
     const {
@@ -10,10 +19,33 @@ const Register = () => {
         watch,
         formState: { errors },
     } = useForm();
-    const onSubmit = (data) => console.log(data);
+
+    const submitForm = useSubmit();
+
+    const onSubmit = (data) => {
+        const { confirmPassword, ...userData } = data;
+        submitForm(userData, { method: 'post' });
+    };
+
+    const isSuccessOperation = useActionData();
+    const navigate = useNavigate();
+
+    const routeErrors = useRouteError();
+
+    useEffect(() => {
+        if (isSuccessOperation) {
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000);
+        }
+    }, [isSuccessOperation]);
+
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state !== 'idle';
+
     return (
         <>
-            <div className="flex flex-col justify-center items-center text-center mt-4">
+            <div className="flex flex-col items-center justify-center mt-4 text-center">
                 <img src={logo} style={{ height: '100px' }} />
                 <h1 className="h2">پلتفرم آموزش آنلاین</h1>
                 <p className="lead">
@@ -46,14 +78,14 @@ const Register = () => {
                                 />
                                 {errors.mobile &&
                                     errors.mobile.type === 'required' && (
-                                        <p className="text-danger small fw-bolder mt-1">
+                                        <p className="mt-1 text-danger small fw-bolder">
                                             {errors.mobile?.message}
                                         </p>
                                     )}
                                 {errors.mobile &&
                                     (errors.mobile.type === 'minLength' ||
                                         errors.mobile.type === 'maxLength') && (
-                                        <p className="text-danger small fw-bolder mt-1">
+                                        <p className="mt-1 text-danger small fw-bolder">
                                             موبایل باید 11 رقم باشد
                                         </p>
                                     )}
@@ -70,7 +102,7 @@ const Register = () => {
                                     type="password"
                                 />
                                 {errors.password && (
-                                    <p className="text-danger small fw-bolder mt-1">
+                                    <p className="mt-1 text-danger small fw-bolder">
                                         {errors.password?.message}
                                     </p>
                                 )}
@@ -96,28 +128,44 @@ const Register = () => {
                                 {errors.confirmPassword &&
                                     errors.confirmPassword.type ===
                                         'required' && (
-                                        <p className="text-danger small fw-bolder mt-1">
+                                        <p className="mt-1 text-danger small fw-bolder">
                                             {errors.confirmPassword?.message}
                                         </p>
                                     )}
                                 {errors.confirmPassword &&
                                     errors.confirmPassword.type ===
                                         'validate' && (
-                                        <p className="text-danger small fw-bolder mt-1">
+                                        <p className="mt-1 text-danger small fw-bolder">
                                             {errors.confirmPassword?.message}
                                         </p>
                                     )}
                             </div>
-                            <div className="text-center mt-3">
+                            <div className="mt-3 text-center">
                                 <button
                                     type="submit"
                                     className="btn btn-lg btn-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    ثبت نام کنید
+                                    {isSubmitting
+                                        ? 'در جال انجام عملیات ...'
+                                        : 'ثبت نام'}
                                 </button>
                             </div>
                         </form>
                     </div>
+                    {isSuccessOperation && (
+                        <div className="alert alert-success">
+                            ثبت نام با موفقیت انجام شد . در حال انتقال به صفحه
+                            ورود
+                        </div>
+                    )}
+                    {routeErrors && (
+                        <div className="p-2 mt-3 alert alert-danger text-danger">
+                            {routeErrors.response?.data.map((error) => (
+                                <p className="mb-0">{error.description}</p>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
@@ -125,3 +173,11 @@ const Register = () => {
 };
 
 export default Register;
+
+export async function registerAction({ request }) {
+    const formData = await request.formData();
+    //  fromentries => convert from KeyValue to Object
+    const data = Object.fromEntries(formData);
+    const response = await httpService.post('/Users', data);
+    return response.status === 200;
+}
