@@ -8,6 +8,9 @@ const router = createBrowserRouter([
         element: <IdentityLayout />,
         children: [
             {
+                path: '/',
+            },
+            {
                 path: 'login',
                 element: <Login />,
             },
