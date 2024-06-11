@@ -11,6 +11,7 @@ import {
 import logo from '@/assets/images/logo.svg';
 import { httpService } from '@/core/http-service';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
     const {
@@ -19,6 +20,8 @@ const Register = () => {
         watch,
         formState: { errors },
     } = useForm();
+
+    const { t } = useTranslation();
 
     const submitForm = useSubmit();
 
@@ -146,9 +149,10 @@ const Register = () => {
                                     className="btn btn-lg btn-primary"
                                     disabled={isSubmitting}
                                 >
-                                    {isSubmitting
+                                    {/* {isSubmitting
                                         ? 'در جال انجام عملیات ...'
-                                        : 'ثبت نام'}
+                                        : 'ثبت نام'} */}
+                                    {t('register.register')}
                                 </button>
                             </div>
                         </form>
