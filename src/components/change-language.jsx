@@ -1,10 +1,13 @@
 import faFlag from '@/assets/images/iran.png';
 import usFlag from '@/assets/images/united-states.png';
 import { useEffect, useRef, useState } from 'react';
+import { useAppContext } from '../contexts/app/app-context';
 
 const ChangeLanguage = () => {
     const [show, setShow] = useState(false);
     const ref = useRef();
+
+    const { language, changeLanguage } = useAppContext();
 
     useEffect(() => {
         const checkIfClickOutside = (e) => {
@@ -26,7 +29,7 @@ const ChangeLanguage = () => {
                 className="nav-flag dropdown-toggle"
                 onClick={() => setShow(true)}
             >
-                <img src={usFlag} alt="English" />
+                <img src={language === 'fa' ? faFlag : usFlag} alt="English" />
             </a>
             <div
                 ref={ref}
@@ -34,8 +37,9 @@ const ChangeLanguage = () => {
                     ${show ? 'show' : undefined}`}
             >
                 <a
-                    className="dropdown-item fw-bolder"
-                    style={{ textAlign: 'right' }}
+                    className="gap-2 dropdown-item fw-bolder d-flex align-items-center"
+                    style={{ textAlign: language === 'fa' ? 'right' : 'left' }}
+                    onClick={() => changeLanguage('fa')}
                 >
                     <img
                         src={faFlag}
@@ -46,8 +50,9 @@ const ChangeLanguage = () => {
                     <span className="align-middle ">فارسی</span>
                 </a>
                 <a
-                    className="dropdown-item fw-bolder"
-                    style={{ textAlign: 'right' }}
+                    className="gap-2 dropdown-item fw-bolder d-flex align-items-center"
+                    style={{ textAlign: language === 'en' ? 'left' : 'right' }}
+                    onClick={() => changeLanguage('en')}
                 >
                     <img
                         src={usFlag}

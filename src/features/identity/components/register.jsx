@@ -50,15 +50,12 @@ const Register = () => {
         <>
             <div className="flex flex-col items-center justify-center mt-4 text-center">
                 <img src={logo} style={{ height: '100px' }} />
-                <h1 className="h2">پلتفرم آموزش آنلاین</h1>
+                <h1 className="h2">{t('register.title')}</h1>
+                <p className="lead">{t('register.introMessage')}</p>
                 <p className="lead">
-                    جهت استفاده از ویژگی های پلتفرم آموزش آنلاین کلاسبن ثبت نام
-                    کنید
-                </p>
-                <p className="lead">
-                    قبلا ثبت نام کرده اید؟
+                    {t('register.alreadyRegistered')}
                     <Link to="/login" className="me-2">
-                        وارد شوید{' '}
+                        {t('register.signin')}{' '}
                     </Link>
                 </p>
             </div>
@@ -68,10 +65,14 @@ const Register = () => {
                     <div className="m-sm-4">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-3">
-                                <label className="form-label">موبایل</label>
+                                <label className="form-label">
+                                    {t('register.mobile')}
+                                </label>
                                 <input
                                     {...register('mobile', {
-                                        required: 'موبایل الزامی است',
+                                        required: `${t(
+                                            'register.alreadyRegistered'
+                                        )}`,
                                         minLength: 11,
                                         maxLength: 11,
                                     })}
@@ -89,15 +90,21 @@ const Register = () => {
                                     (errors.mobile.type === 'minLength' ||
                                         errors.mobile.type === 'maxLength') && (
                                         <p className="mt-1 text-danger small fw-bolder">
-                                            موبایل باید 11 رقم باشد
+                                            {t(
+                                                'register.validation.mobileLength'
+                                            )}{' '}
                                         </p>
                                     )}
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">رمز عبور</label>
+                                <label className="form-label">
+                                    {t('register.password')}
+                                </label>
                                 <input
                                     {...register('password', {
-                                        required: 'رمز عبور الزامی است',
+                                        required: `${t(
+                                            'register.validation.PasswordRequired'
+                                        )}`,
                                     })}
                                     className={`form-control form-control-lg ${
                                         errors.password && 'is-invalid'
@@ -112,14 +119,18 @@ const Register = () => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">
-                                    تکرار رمز عبور
+                                    {t('register.repeatPassword')}
                                 </label>
                                 <input
                                     {...register('confirmPassword', {
-                                        required: 'تکرار رمز عبور الزامی است',
+                                        required: `${t(
+                                            'register.validation.RepeatPasswordRequired'
+                                        )}`,
                                         validate: (value) => {
                                             if (watch('password') !== value) {
-                                                return 'عدم تطابق با رمز عبور وارد شده';
+                                                return `${t(
+                                                    'register.validation.NotMatching'
+                                                )}`;
                                             }
                                         },
                                     })}
@@ -159,8 +170,7 @@ const Register = () => {
                     </div>
                     {isSuccessOperation && (
                         <div className="alert alert-success">
-                            ثبت نام با موفقیت انجام شد . در حال انتقال به صفحه
-                            ورود
+                            {t('register.successOperation')}
                         </div>
                     )}
                     {routeErrors && (
