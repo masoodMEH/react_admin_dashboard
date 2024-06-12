@@ -1,18 +1,44 @@
 import logo from '@/assets/images/logo.svg';
-import { Link } from 'react-router-dom';
+import { httpService } from '@/core/http-service';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import {
+    Link,
+    redirect,
+    useNavigation,
+    useRouteError,
+    useSubmit,
+} from 'react-router-dom';
 const Login = () => {
+    const { t } = useTranslation();
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm();
+
+    const submitForm = useSubmit();
+    const onSubmit = (data) => {
+        submitForm(data, { method: 'post' });
+    };
+
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state !== 'idle';
+
+    const routeErrors = useRouteError();
+
     return (
         <>
-            <div className="flex flex-col justify-center items-center text-center mt-4 ">
-                <img className="h-24" src={logo} />
-                <h1 className="h2">پلتفرم آموزش آنلاین</h1>
+            <div className="mt-4 text-center">
+                <img src={logo} style={{ height: '100px' }} />
+                <h1 className="h2">{t('login.title')}</h1>
+                <p className="lead">{t('login.introMessage')}</p>
                 <p className="lead">
-                    جهت ورود لازم است از طریق موبایل و رمز عبور خود اقدام کنید
-                </p>
-                <p className="lead">
-                    قبلا ثبت نام نکرده اید؟
+                    {t('login.areNotRegistered')}
                     <Link to="/register" className="me-2">
-                        ثبت نام کنید{' '}
+                        {' '}
+                        {t('login.register')}{' '}
                     </Link>
                 </p>
             </div>
@@ -20,26 +46,81 @@ const Login = () => {
             <div className="card">
                 <div className="card-body">
                     <div className="m-sm-4">
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="mb-3">
-                                <label className="form-label">موبایل</label>
-                                <input className="form-control form-control-lg" />
+                                <label className="form-label">
+                                    {t('login.mobile')}
+                                </label>
+                                <input
+                                    {...register('mobile', {
+                                        required: true,
+                                        minLength: 11,
+                                        maxLength: 11,
+                                    })}
+                                    className={`form-control form-control-lg ${
+                                        errors.mobile && 'is-invalid'
+                                    }`}
+                                />
+                                {errors.mobile &&
+                                    errors.mobile.type === 'required' && (
+                                        <p className="mt-1 text-danger small fw-bolder">
+                                            {t(
+                                                'login.validation.mobileRequired'
+                                            )}
+                                        </p>
+                                    )}
+                                {errors.mobile &&
+                                    (errors.mobile.type === 'minLength' ||
+                                        errors.mobile.type === 'maxLength') && (
+                                        <p className="mt-1 text-danger small fw-bolder">
+                                            {t('login.validation.mobileLength')}
+                                        </p>
+                                    )}
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">رمز عبور</label>
+                                <label className="form-label">
+                                    {t('login.password')}
+                                </label>
                                 <input
-                                    className="form-control form-control-lg mb-2"
+                                    {...register('password', {
+                                        required: true,
+                                    })}
+                                    className={`form-control form-control-lg ${
+                                        errors.password && 'is-invalid'
+                                    }`}
                                     type="password"
                                 />
+                                {errors.password &&
+                                    errors.password.type === 'required' && (
+                                        <p className="mt-1 text-danger small fw-bolder">
+                                            {t(
+                                                'login.validation.passwordRequired'
+                                            )}
+                                        </p>
+                                    )}
                             </div>
-                            <div className="text-center mt-3">
+                            <div className="mt-3 text-center">
                                 <button
+                                    disabled={isSubmitting}
                                     type="submit"
                                     className="btn btn-lg btn-primary"
                                 >
-                                    وارد شوید
+                                    {isSubmitting
+                                        ? t('login.signingin')
+                                        : t('login.signin')}
                                 </button>
                             </div>
+                            {routeErrors && (
+                                <div className="p-2 mt-3 alert alert-danger text-danger">
+                                    {routeErrors.response?.data.map((error) => (
+                                        <p className="mb-0">
+                                            {t(
+                                                `login.validation.${error.code}`
+                                            )}
+                                        </p>
+                                    ))}
+                                </div>
+                            )}
                         </form>
                     </div>
                 </div>
@@ -47,5 +128,15 @@ const Login = () => {
         </>
     );
 };
+
+export async function loginAction({ request }) {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+    const response = await httpService.post('/Users/login', data);
+    if (response.status === 200) {
+        localStorage.setItem('token', response?.data.token);
+        return redirect('/');
+    }
+}
 
 export default Login;
