@@ -6,6 +6,7 @@ const AppContext = createContext();
 const initialState = {
     language: localStorage.getItem('language') || 'fa',
     theme: localStorage.getItem('theme') || 'light',
+    showSidebar: true,
 };
 
 const AppProvider = ({ children }) => {
@@ -18,6 +19,10 @@ const AppProvider = ({ children }) => {
 
     const changeTheme = (theme) => {
         dispatch({ type: 'CHANGE_THEME', payload: theme });
+    };
+
+    const toggleSidebar = () => {
+        dispatch({ type: 'TOGGLE_SIDEBAR' });
     };
 
     useEffect(() => {
@@ -34,7 +39,9 @@ const AppProvider = ({ children }) => {
     }, [state.theme]);
 
     return (
-        <AppContext.Provider value={{ ...state, changeLanguage, changeTheme }}>
+        <AppContext.Provider
+            value={{ ...state, changeLanguage, changeTheme, toggleSidebar }}
+        >
             {children}
         </AppContext.Provider>
     );

@@ -20,6 +20,7 @@ const Sidebar = () => {
                     </li>
                     <li className="sidebar-item">
                         <NavLink
+                            style={{ display: 'flex', alignItems: 'center' }}
                             className={({ isActive }) =>
                                 isActive
                                     ? 'sidebar-link active'
@@ -57,6 +58,7 @@ const Sidebar = () => {
                     </li>
                     <li className="sidebar-item">
                         <NavLink
+                            style={{ display: 'flex', alignItems: 'center' }}
                             className={({ isActive }) =>
                                 isActive
                                     ? 'sidebar-link active'
@@ -88,13 +90,12 @@ const Sidebar = () => {
                             </svg>
 
                             <span className="align-middle me-2">
-                                {/* {t('mainLayout.sidebar.coursesCategory')} */}
-                                دسته بندی
+                                {t('mainLayout.sidebar.coursesCategory')}
                             </span>
                         </NavLink>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link">
+                        <a className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -121,7 +122,7 @@ const Sidebar = () => {
                         {t('mainLayout.sidebar.userManagement')}
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link">
+                        <a className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -144,7 +145,7 @@ const Sidebar = () => {
                         </a>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link">
+                        <a className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -172,7 +173,7 @@ const Sidebar = () => {
                         {t('mainLayout.sidebar.blogManagement')}
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link">
+                        <a className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -195,7 +196,7 @@ const Sidebar = () => {
                         </a>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link">
+                        <a className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
