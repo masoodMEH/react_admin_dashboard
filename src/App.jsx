@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import { useAppContext } from '@/contexts/app/app-context';
+import '@/core/i18n';
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from './router';
 
-import '@/core/i18n';
-import { useAppContext } from './contexts/app/app-context';
-
-const App = () => {
+function App() {
     const { theme } = useAppContext();
     useEffect(() => {
         const head = document.head;
@@ -18,7 +17,11 @@ const App = () => {
             head.removeChild(link);
         };
     }, [theme]);
-    return <RouterProvider router={router} />;
-};
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    );
+}
 
 export default App;
