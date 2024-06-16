@@ -1,7 +1,7 @@
 import logo from '@/assets/images/logo.svg';
 import { useAppContext } from '@/contexts/app/app-context';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     const { showSidebar } = useAppContext();
@@ -9,10 +9,10 @@ const Sidebar = () => {
     return (
         <nav className={`sidebar ${!showSidebar ? 'collapsed' : ''}`}>
             <div className="sidebar-content">
-                <a className="pt-0 mb-0 sidebar-brand d-flex flex-column align-items-center">
+                <Link className="pt-0 mb-0 sidebar-brand d-flex flex-column align-items-center">
                     <img src={logo} style={{ height: '80px' }} />
                     <p className="mb-0">{t('mainLayout.sidebar.subtitle')}</p>
-                </a>
+                </Link>
 
                 <ul className="sidebar-nav pe-0">
                     <li className="sidebar-header fw-bolder fs-lg">
@@ -95,7 +95,7 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link d-flex align-items-center">
+                        <Link className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -116,13 +116,13 @@ const Sidebar = () => {
                             <span className="align-middle me-2">
                                 {t('mainLayout.sidebar.courseDiscount')}
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="sidebar-header fw-bolder fs-lg">
                         {t('mainLayout.sidebar.userManagement')}
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link d-flex align-items-center">
+                        <Link className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -142,10 +142,10 @@ const Sidebar = () => {
                             <span className="align-middle me-2">
                                 {t('mainLayout.sidebar.teacherManagement')}
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link d-flex align-items-center">
+                        <Link className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -167,13 +167,13 @@ const Sidebar = () => {
                             <span className="align-middle me-2">
                                 {t('mainLayout.sidebar.studentManagement')}
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="sidebar-header fw-bolder fs-lg">
                         {t('mainLayout.sidebar.blogManagement')}
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link d-flex align-items-center">
+                        <Link className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -193,10 +193,10 @@ const Sidebar = () => {
                             <span className="align-middle me-2">
                                 {t('mainLayout.sidebar.tagManagement')}
                             </span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="sidebar-item">
-                        <a className="sidebar-link d-flex align-items-center">
+                        <Link className="sidebar-link d-flex align-items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -219,7 +219,7 @@ const Sidebar = () => {
                             <span className="align-middle me-2">
                                 {t('mainLayout.sidebar.postManagement')}
                             </span>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>

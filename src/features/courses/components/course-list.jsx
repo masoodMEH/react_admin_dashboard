@@ -1,12 +1,11 @@
-import { useLoaderData } from 'react-router-dom';
+// کامپوننت لیست کورس ها
 import Course from './course';
 
-const CourseList = () => {
-    const loadedCourses = useLoaderData();
+const CourseList = ({ courses }) => {
     return (
         <>
             <div className="row">
-                {loadedCourses.map((course) => (
+                {courses.map((course) => (
                     <div className="col-3" key={course.id}>
                         <Course {...course} />
                     </div>
