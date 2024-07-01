@@ -1,5 +1,8 @@
+import { Link } from 'react-router-dom';
+
 // کامپوننت مربوط به دریافت آیتم های هر کورس
 const Course = ({
+    id,
     title,
     coverImageUrl,
     courseLevel,
@@ -14,7 +17,9 @@ const Course = ({
                 <div className="my-2 badge bg-primary fw-bolder">
                     {courseLevel}
                 </div>
-                <h4 className="mb-0">{title}</h4>
+                <h4 className="mb-0">
+                    <Link to={`/courses/${id}`}>{title}</Link>
+                </h4>
             </div>
             <div className="px-4 pt-2 card-body">
                 <p className="text-truncate-3">{description}</p>
